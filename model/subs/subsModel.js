@@ -13,6 +13,8 @@ let SubsSchema = new mongoose.Schema({
             ref: "movie",
             required: true,
         },
+        name: String,
+        image: String,
         date: Date
     }]
 }, {collection: 'subscriptions'})

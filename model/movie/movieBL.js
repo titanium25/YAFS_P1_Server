@@ -45,10 +45,10 @@ exports.dropDown = async function (memberId) {
 
     // not all members got subscription yet
     if(subs) {
-        // pull movie id only
-        const moviesWatchedArr = subs.movies.map(obj => obj.movieId)
+        // pull movie name only
+        const moviesWatchedArr = subs.movies.map(obj => obj.name)
         // return dropdown without movies that member watched
-        return Movie.find({_id: {$nin: moviesWatchedArr}});
+        return Movie.find({name: {$nin: moviesWatchedArr}});
     } else {
         // member has not got subscription yet, return all the movies
         return Movie.find({})
