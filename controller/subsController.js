@@ -1,12 +1,45 @@
 const express = require('express');
 const router = express.Router();
 const subsBL = require('../model/subs/subsBL');
+const memberBL = require('../model/member/memberBL');
+
 
 // Get All Subs
 router.route('/')
     .get(async function (req, res) {
         const subs = await subsBL.getAllSubs();
         res.json(subs);
+    })
+
+function randomColor() {
+    let hex = Math.floor(Math.random() * 0xFFFFFF);
+    let color = "#" + hex.toString(16);
+
+    return color;
+}
+
+// Get member list
+router.route('/movie/:movieId')
+    .get(async function (req, res) {
+        const movieId = req.params.movieId;
+        const subs = await subsBL.getAllSubs();
+        const membersArr = []
+
+        await Promise.all(subs.map(async (subs) =>
+            await Promise.all(subs.movies.map(async (element) => {
+                    if (element.movieId == movieId) {
+                        let member = await memberBL.getMember(subs.memberId)
+                        let obj = {
+                            name: member.name,
+                            date: element.date,
+                            color: randomColor()
+                        }
+                        membersArr.push(obj)
+                    }
+                }
+            ))))
+
+        res.json(await Promise.all(membersArr));
     })
 
 // Add Subs

@@ -14,7 +14,6 @@ exports.addSubs = async function (obj) {
         image: obj.image,
         date: obj.date
     };
-    console.log(movie)
     console.log('Updating subs')
     await Subs.findOneAndUpdate(
         filter,
