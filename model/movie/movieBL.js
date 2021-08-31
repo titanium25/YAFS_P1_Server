@@ -66,6 +66,7 @@ exports.updateMovie = function (id, obj) {
             name : obj.name,
             genres : obj.genres,
             image : obj.image,
+            rating: obj.rating,
             premiered : obj.premiered
         }, function (err) {
             if (err) {
