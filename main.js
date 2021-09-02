@@ -40,7 +40,7 @@ const restDAL = require('./DAL/restDAL');
                     url,
                     language,
                     officialSite,
-                    rating,
+                    rating: rating.average /2,
                     summary
                 }));              // Filter relevant data from Movies API
         await moviesArr.map(obj => movieBL.addMovie(obj))     // Add Movies to DB
@@ -56,6 +56,7 @@ const restDAL = require('./DAL/restDAL');
         console.log('Member collection initialization done...');
     }
 })();
+
 
 main.use(express.json());
 main.use(express.urlencoded({extended: false}));

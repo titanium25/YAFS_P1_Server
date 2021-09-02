@@ -14,4 +14,5 @@ let MovieSchema = new mongoose.Schema({
     rating: Number,
     summary: String
 }, {collection : 'movies'})
+
 module.exports = mongoose.model('Movie', MovieSchema)

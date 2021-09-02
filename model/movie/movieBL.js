@@ -6,19 +6,20 @@ exports.countMovies = function () {
 }
 
 exports.addMovie = function (obj) {
+    console.log(obj)
     return new Promise((resolve, reject) => {
         let movie = new Movie({
             name : obj.name,
             genres : obj.genres,
             image : {
-                medium: obj.image.medium || obj.image,
-                original: obj.image.original
+                medium: obj.image.medium || 'na',
+                original: obj.image.original || 'na'
             },
             premiered : obj.premiered,
             url: obj.url,
             language : obj.language,
             officialSite : obj.officialSite,
-            rating : obj.rating.average,
+            rating : obj.rating,
             summary : obj.summary
         });
 
