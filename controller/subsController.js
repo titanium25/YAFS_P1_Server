@@ -11,13 +11,6 @@ router.route('/')
         res.json(subs);
     })
 
-function randomColor() {
-    let hex = Math.floor(Math.random() * 0xFFFFFF);
-    let color = "#" + hex.toString(16);
-
-    return color;
-}
-
 // Get member list
 router.route('/movie/:movieId')
     .get(async function (req, res) {
@@ -32,7 +25,7 @@ router.route('/movie/:movieId')
                         let obj = {
                             name: member.name,
                             date: element.date,
-                            color: randomColor()
+                            color: member.color
                         }
                         membersArr.push(obj)
                     }

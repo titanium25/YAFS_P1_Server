@@ -1,4 +1,5 @@
 const Member = require('./memberModel')
+const Subs = require('../subs/subsModel')
 
 exports.countMembers = function () {
     return new Promise((resolve, reject) => {
@@ -12,15 +13,22 @@ exports.countMembers = function () {
     })
 }
 
+function randomColor() {
+    let hex = Math.floor(Math.random() * 0xFFFFFF);
+    return "#" + hex.toString(16);
+}
+
 exports.addMember = function (obj) {
     return new Promise((resolve, reject) => {
         let member = new Member({
             memberId: obj.id,
             name: obj.name,
             email: obj.email,
-            city: (typeof obj.city != 'undefined') ? obj.city : obj.address.city
+            city: (typeof obj.city != 'undefined') ? obj.city : obj.address.city,
+            color: randomColor()
         });
-        // console.log(member)
+        console.log(member)
+
         member.save(function (err) {
             if (err) {
                 reject(err);
@@ -69,7 +77,20 @@ exports.updateMember = function (id, obj) {
     });
 }
 
-// Delete member by id
+const deleteSubs = (id) => {
+    return Subs.findOneAndDelete({memberId: id }, function (err, docs) {
+        if (err){
+            console.log(err)
+        }
+        else{
+            console.log("Delete Subs : ", docs);
+        }
+    });
+}
+
+// Delete member and his subs by member id
 exports.deleteMember = function (memberId) {
+    console.log(memberId)
+    deleteSubs(memberId)
     return Member.findByIdAndDelete(memberId)
 }
