@@ -70,13 +70,27 @@ router.route('/:memberId')
         }
     })
 
-// Update Subs
-router.route('/:id')
+// Update All Subs - delete specific movie from all subs
+router.route('/:movieId')
     .put(async function (req, res) {
-        let id = req.params.id;
+        let id = req.params.movieId;
         // Check if ObjectId is valid
         if (id.match(/^[0-9a-fA-F]{24}$/)) {
-            let status = await subsBL.updateSubs(id);
+            let status = await subsBL.updateAllSubs(id);
+            res.json(status);
+        } else {
+            res.status(404).send('Not Found')
+        }
+    })
+
+// Update Subs - delete specific movie from a specific subs
+router.route('/movie/:movieId/subs/:subsId')
+    .put(async function (req, res) {
+        let movieId = req.params.movieId;
+        let subsId = req.params.subsId;
+        // Check if ObjectId is valid
+        if (movieId.match(/^[0-9a-fA-F]{24}$/) && subsId.match(/^[0-9a-fA-F]{24}$/)) {
+            let status = await subsBL.updateSubs(movieId, subsId)
             res.json(status);
         } else {
             res.status(404).send('Not Found')

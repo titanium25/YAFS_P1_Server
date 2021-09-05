@@ -90,7 +90,6 @@ const deleteSubs = (id) => {
 
 // Delete member and his subs by member id
 exports.deleteMember = function (memberId) {
-    console.log(memberId)
     deleteSubs(memberId)
     return Member.findByIdAndDelete(memberId)
 }

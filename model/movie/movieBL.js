@@ -1,26 +1,27 @@
 const Movie = require('./movieModel')
+const Subs = require('../subs/subsModel')
 const subsBL = require('../subs/subsBL')
 
 exports.countMovies = function () {
-      return Movie.countDocuments({});
+    return Movie.countDocuments({});
 }
 
 exports.addMovie = function (obj) {
     console.log(obj)
     return new Promise((resolve, reject) => {
         let movie = new Movie({
-            name : obj.name,
-            genres : obj.genres,
-            image : {
+            name: obj.name,
+            genres: obj.genres,
+            image: {
                 medium: obj.image.medium || 'na',
                 original: obj.image.original || 'na'
             },
-            premiered : obj.premiered,
+            premiered: obj.premiered,
             url: obj.url,
-            language : obj.language,
-            officialSite : obj.officialSite,
-            rating : obj.rating,
-            summary : obj.summary
+            language: obj.language,
+            officialSite: obj.officialSite,
+            rating: obj.rating,
+            summary: obj.summary
         });
 
 
@@ -36,7 +37,7 @@ exports.addMovie = function (obj) {
 
 exports.getAllMovies = async function (page, size, all) {
     return all ? Movie.find({}) :
-                 Movie.find().skip((size * page) - size).limit(size)
+        Movie.find().skip((size * page) - size).limit(size)
 }
 
 // Return movie list for dropdown menu with movies that member has not watched yet
@@ -45,7 +46,7 @@ exports.dropDown = async function (memberId) {
     const subs = await subsBL.getSubs(memberId)
 
     // not all members got subscription yet
-    if(subs) {
+    if (subs) {
         // pull movie name only
         const moviesWatchedArr = subs.movies.map(obj => obj.name)
         // return dropdown without movies that member watched
@@ -57,18 +58,18 @@ exports.dropDown = async function (memberId) {
 }
 
 exports.getMovie = function (id) {
-       return Movie.findById(id)
+    return Movie.findById(id)
 }
 
 exports.updateMovie = function (id, obj) {
     return new Promise((resolve, reject) => {
         Movie.findByIdAndUpdate(id, {
-            movieId : obj.id,
-            name : obj.name,
-            genres : obj.genres,
-            image : obj.image,
+            movieId: obj.id,
+            name: obj.name,
+            genres: obj.genres,
+            image: obj.image,
             rating: obj.rating,
-            premiered : obj.premiered
+            premiered: obj.premiered
         }, function (err) {
             if (err) {
                 reject(err)
@@ -79,6 +80,8 @@ exports.updateMovie = function (id, obj) {
     });
 }
 
-exports.deleteMovie = function (id){
-       return  Movie.findByIdAndDelete(id);
+// Delete movie from movies and delete movie from subs
+exports.deleteMovie = async function (id) {
+    await subsBL.updateAllSubs(id)
+    return Movie.findByIdAndDelete(id);
 }
