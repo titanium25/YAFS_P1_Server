@@ -1,12 +1,23 @@
 const Movie = require('./movieModel')
+const Commnmets = require('../comment/commentModel')
 const subsBL = require('../subs/subsBL')
 
 exports.countMovies = function () {
     return Movie.countDocuments({});
 }
 
+const randomComment = async () => {
+    return await Commnmets.aggregate([
+        {$match: {}},
+        {$sample: {size: Math.floor(
+                    Math.random() * (Math.ceil(4) - Math.floor(1) + 1) + 1
+                )}},
+    ]).exec()
+}
+
+
 exports.addMovie = function (obj) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         let movie = new Movie({
             name: obj.name,
             genres: obj.genres,
@@ -19,11 +30,11 @@ exports.addMovie = function (obj) {
             language: obj.language,
             officialSite: obj.officialSite,
             rating: obj.rating,
-            summary: obj.summary
+            summary: obj.summary,
+            comments: await randomComment()
         });
 
-
-        movie.save(function (err) {
+        await movie.save({},function (err) {
             if (err) {
                 reject(console.log(err));
             } else {
