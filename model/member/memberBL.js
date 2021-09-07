@@ -27,7 +27,6 @@ exports.addMember = function (obj) {
             city: (typeof obj.city != 'undefined') ? obj.city : obj.address.city,
             color: randomColor()
         });
-        console.log(member)
 
         member.save(function (err) {
             if (err) {

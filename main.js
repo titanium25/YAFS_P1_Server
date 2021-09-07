@@ -11,11 +11,21 @@ main.use(cors())
 
 const movieBL = require('./model/movie/movieBL');
 const memberBL = require('./model/member/memberBL');
+const commentBL = require('./model/comment/commentBL');
 const restDAL = require('./DAL/restDAL');
 
 
 // DB initialization
 (async () => {
+    // Check if Comments Collection is empty
+    if (await commentBL.countComments() === 0) {
+        console.log('Start comment collection initialization...');
+        let comments = await restDAL.getPosts();                // Get All Comments from API
+        let commentsArr = comments.data.map(({body}) =>
+            ({body}));                                          // Filter relevant data from Comments API
+        await commentsArr.map(obj => commentBL.addComment(obj))  // Add Comments to DB
+        console.log('Comment collection initialization done...');
+    }
     // Check if Movies Collection is empty
     if (await movieBL.countMovies() === 0) {
         console.log('Start movie collection initialization...');

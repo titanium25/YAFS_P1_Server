@@ -1,5 +1,4 @@
 const Movie = require('./movieModel')
-const Subs = require('../subs/subsModel')
 const subsBL = require('../subs/subsBL')
 
 exports.countMovies = function () {
@@ -7,7 +6,6 @@ exports.countMovies = function () {
 }
 
 exports.addMovie = function (obj) {
-    console.log(obj)
     return new Promise((resolve, reject) => {
         let movie = new Movie({
             name: obj.name,
