@@ -1,5 +1,5 @@
 const Movie = require('./movieModel')
-const Commnmets = require('../comment/commentModel')
+const Comments = require('../comment/commentModel')
 const subsBL = require('../subs/subsBL')
 
 exports.countMovies = function () {
@@ -7,7 +7,7 @@ exports.countMovies = function () {
 }
 
 const randomComment = async () => {
-    return await Commnmets.aggregate([
+    return await Comments.aggregate([
         {$match: {}},
         {$sample: {size: Math.floor(
                     Math.random() * (Math.ceil(4) - Math.floor(1) + 1) + 1
