@@ -15,7 +15,6 @@ const randomComment = async () => {
     ]).exec()
 }
 
-
 exports.addMovie = function (obj) {
     return new Promise(async (resolve, reject) => {
         let movie = new Movie({
@@ -41,6 +40,18 @@ exports.addMovie = function (obj) {
                 resolve('Created with id: ' + movie._id)
             }
         })
+    });
+}
+
+exports.addReview = async function (id, obj) {
+    return new Promise((resolve, reject) => {
+        Movie.findOneAndUpdate({ '_id': id },{ "$push": { "comments": obj } }, { 'new': true }, (err, info) => {
+            if (err) {
+                reject(err);
+            } else {
+                resolve('Updated')
+            }
+        });
     });
 }
 

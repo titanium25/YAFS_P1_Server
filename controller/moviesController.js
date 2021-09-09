@@ -56,6 +56,16 @@ router.route('/')
         res.json(status)
     })
 
+// Add Review
+router.route('/review/:movieId')
+    .put(async function (req, res) {
+        let obj = req.body
+        let id = req.params.movieId
+        let status = await movieBL.addReview(id, obj)
+        res.json(status)
+    })
+
+
 // Update Movie
 router.route('/:id')
     .put(async function (req, res) {
