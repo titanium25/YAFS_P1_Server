@@ -1,85 +1,57 @@
 const express = require('express');
+const cors = require('cors')
+const bodyParser = require("body-parser")
+const cookieParser = require("cookie-parser")
+const passport = require('passport')
+
 const membersController = require('./controller/membersController');
 const moviesController = require('./controller/moviesController');
 const subsController = require('./controller/subsController');
+const userController = require('./controller/userController');
 
-const main = express();
-const cors = require('cors')
+if (process.env.NODE_ENV !== "production") {
+    // Load environment variables from .env file in non prod environments
+    require("dotenv").config()
+}
+const app = express();
 
-// Enable CORS
-main.use(cors())
+app.use(bodyParser.json())
+app.use(cookieParser(process.env.COOKIE_SECRET))
 
-const movieBL = require('./model/movie/movieBL');
-const memberBL = require('./model/member/memberBL');
-const commentBL = require('./model/comment/commentBL');
-const restDAL = require('./DAL/restDAL');
+require("./config/database")
+require("./config/dbInit")
+require("./strategies/JwtStrategy")
+require("./strategies/LocalStrategy")
+require("./authenticate")
 
+//Add the client URL to the CORS policy
+const whitelist = process.env.WHITELISTED_DOMAINS
+    ? process.env.WHITELISTED_DOMAINS.split(",")
+    : []
 
-// DB initialization
-(async () => {
-    // Check if Comments Collection is empty
-    if (await commentBL.countComments() === 0) {
-        console.log('Start comment collection initialization...');
-        let comments = await restDAL.getPosts();                // Get All Comments from API
-        let commentsArr = comments.data.map(({body}) =>
-            ({body}));                                          // Filter relevant data from Comments API
-        await commentsArr.map(obj => commentBL.addComment(obj))  // Add Comments to DB
-        console.log('Comment collection initialization done...');
-    }
-    // Check if Movies Collection is empty
-    if (await movieBL.countMovies() === 0) {
-        console.log('Start movie collection initialization...');
-        let movies = await restDAL.getMovies();               // Get All Movies from API
-        let moviesArr = movies.data.map(
-            ({
-                 name,
-                 genres,
-                 image,
-                 premiered,
-                 url,
-                 language,
-                 officialSite,
-                 rating,
-                 summary
-             }) =>
-                ({
-                    name,
-                    genres,
-                    image,
-                    premiered,
-                    url,
-                    language,
-                    officialSite,
-                    rating: rating.average /2,
-                    summary
-                }));              // Filter relevant data from Movies API
-        await moviesArr.map(obj => movieBL.addMovie(obj))     // Add Movies to DB
-        console.log('Movie collection initialization done...');
-    }
-    // Check if Members Collection is empty
-    if (await memberBL.countMembers() === 0) {
-        console.log('Start member collection initialization...');
-        let members = await restDAL.getMembers();             // Get All Members from API
-        let membersArr = members.data.map(({name, email, address}) =>
-            ({name, email, address}));                        // Filter relevant data from Members API
-        await membersArr.map(obj => memberBL.addMember(obj))  // Add Members to DB
-        console.log('Member collection initialization done...');
-    }
-})();
+const corsOptions = {
+    origin: function (origin, callback) {
+        if (!origin || whitelist.indexOf(origin) !== -1) {
+            callback(null, true)
+        } else {
+            callback(new Error("Not allowed by CORS"))
+        }
+    },
+    credentials: true,
+}
 
+app.use(cors(corsOptions))
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
+app.use(passport.initialize())
 
-main.use(express.json());
-main.use(express.urlencoded({extended: false}));
+app.use('/api/members', membersController);
+app.use('/api/movies', moviesController);
+app.use('/api/subs', subsController);
+app.use("/api/users", userController)
 
-/*
-RESTfull Resource Naming Conventions
-https://nordicapis.com/10-best-practices-for-naming-api-endpoints/
- */
-main.use('/api/members', membersController);
-main.use('/api/movies', moviesController);
-main.use('/api/subs', subsController);
-
-
-require('./config/database');
-
-main.listen(2020);
+//Start the server in port 2020
+const server = app.listen(process.env.PORT || 2020, function () {
+    const port = server.address().port
+    console.log("App started at port:", port)
+})
