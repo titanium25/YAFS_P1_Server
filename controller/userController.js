@@ -4,6 +4,7 @@ const User = require("../model/user/usersModel");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const userBL = require("../model/user/userBL");
+const jsonDAL = require('../DAL/jsonDAL');
 
 const {
     getToken,
@@ -11,7 +12,6 @@ const {
     getRefreshToken,
     verifyUser,
 } = require("../authenticate")
-const memberBL = require("../model/member/memberBL");
 
 router.post("/signup", (req, res, next) => {
     // Verify that first name is not empty
@@ -26,25 +26,27 @@ router.post("/signup", (req, res, next) => {
             new User({ username: req.body.username }),
             req.body.password,
 
-            (err, user) => {
+             (err, user) => {
                 if (err) {
                     res.statusCode = 500
                     res.send(err)
                 } else {
                     user.firstName = req.body.firstName
                     user.lastName = req.body.lastName || ""
-                    const token = getToken({ _id: user._id })
-                    const refreshToken = getRefreshToken({ _id: user._id })
-                    user.refreshToken.push({ refreshToken })
-                    user.save((err, user) => {
+                    const token = getToken({_id: user._id})
+                    const refreshToken = getRefreshToken({_id: user._id})
+                    user.refreshToken.push({refreshToken})
+                    user.save(async (err, user) => {
                         if (err) {
                             res.statusCode = 500
                             res.send(err)
                         } else {
+                            await userBL.addUser(user)
                             res.cookie("refreshToken", refreshToken, COOKIE_OPTIONS)
-                            res.send({ success: true, token })
+                            res.send({success: true, token})
                         }
                     })
+
                 }
             }
         )
