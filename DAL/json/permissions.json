@@ -1,7 +1,7 @@
 {
   "permissionsData": [
     {
-      "id": "613e893725f6d64c88c41993",
+      "id": "61445d9e6d6ce801248e0dfe",
       "vs": false,
       "cs": false,
       "ds": false,
@@ -12,40 +12,7 @@
       "um": false
     },
     {
-      "id": "613e8c26cd36266234ade460",
-      "vs": false,
-      "cs": false,
-      "ds": false,
-      "us": false,
-      "vm": false,
-      "cm": false,
-      "dm": false,
-      "um": false
-    },
-    {
-      "id": "613e8cae050fa1464871a338",
-      "vs": false,
-      "cs": false,
-      "ds": false,
-      "us": false,
-      "vm": false,
-      "cm": false,
-      "dm": false,
-      "um": false
-    },
-    {
-      "id": "613e8d5cdd59a81bb4e8acae",
-      "vs": false,
-      "cs": false,
-      "ds": false,
-      "us": false,
-      "vm": false,
-      "cm": false,
-      "dm": false,
-      "um": false
-    },
-    {
-      "id": "613e8e6addeeab0e84086adf",
+      "id": "61445e52e8ce4b00f82d3bc3",
       "vs": false,
       "cs": false,
       "ds": false,

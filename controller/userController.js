@@ -6,6 +6,12 @@ const jwt = require("jsonwebtoken");
 const userBL = require("../model/user/userBL");
 const jsonDAL = require('../DAL/jsonDAL');
 
+function randomColor() {
+    let hex = Math.floor(Math.random() * 0xFFFFFF);
+    return "#" + hex.toString(16);
+}
+
+
 const {
     getToken,
     COOKIE_OPTIONS,
@@ -14,6 +20,7 @@ const {
 } = require("../authenticate")
 
 router.post("/signup", (req, res, next) => {
+    console.log(req.body)
     // Verify that first name is not empty
     if (!req.body.firstName) {
         res.statusCode = 500
@@ -33,6 +40,7 @@ router.post("/signup", (req, res, next) => {
                 } else {
                     user.firstName = req.body.firstName
                     user.lastName = req.body.lastName || ""
+                    user.color = randomColor()
                     const token = getToken({_id: user._id})
                     const refreshToken = getRefreshToken({_id: user._id})
                     user.refreshToken.push({refreshToken})

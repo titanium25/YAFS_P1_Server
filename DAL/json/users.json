@@ -1,34 +1,16 @@
 {
   "usersData": [
     {
-      "id": "613e893725f6d64c88c41993",
-      "firstName": "ALEXANDER",
-      "lastName": "LAZAROVICH",
-      "created": "13/09/2021, 02:11:51"
+      "id": "61445d9e6d6ce801248e0dfe",
+      "firstName": "Osher",
+      "lastName": "Lazarovich",
+      "created": "17/09/2021, 12:19:27"
     },
     {
-      "id": "613e8c26cd36266234ade460",
-      "firstName": "asas",
-      "lastName": "sssd",
-      "created": "13/09/2021, 02:24:22"
-    },
-    {
-      "id": "613e8cae050fa1464871a338",
-      "firstName": "ALEXANDER",
-      "lastName": "LAZAROVICH",
-      "created": "13/09/2021, 02:26:39"
-    },
-    {
-      "id": "613e8d5cdd59a81bb4e8acae",
-      "firstName": "ALEXANDER",
-      "lastName": "LAZAROVICH",
-      "created": "13/09/2021, 02:29:33"
-    },
-    {
-      "id": "613e8e6addeeab0e84086adf",
-      "firstName": "ALEXANDER",
-      "lastName": "LAZAROVICH",
-      "created": "13/09/2021, 02:34:03"
+      "id": "61445e52e8ce4b00f82d3bc3",
+      "firstName": "Osher",
+      "lastName": "Lazarovich",
+      "created": "17/09/2021, 12:22:27"
     }
   ]
 }

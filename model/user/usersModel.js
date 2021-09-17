@@ -33,6 +33,7 @@ const User = new Schema({
     refreshToken: {
         type: [Session],
     },
+    color: String
 }, {collection: 'users'})
 
 //Remove refreshToken from the response

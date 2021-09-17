@@ -29,14 +29,14 @@ exports.addUser = async function (obj) {
     // Create new Permissions in JSON
     permissionsDataArr.push({
         id: obj._id,
-        vs: (typeof vs != 'undefined'),
-        cs: (typeof cs != 'undefined'),
-        ds: (typeof ds != 'undefined'),
-        us: (typeof us != 'undefined'),
-        vm: (typeof vm != 'undefined'),
-        cm: (typeof cm != 'undefined'),
-        dm: (typeof dm != 'undefined'),
-        um: (typeof um != 'undefined')
+        vs: obj.state ? obj.state.vs : false,
+        cs: obj.state ? obj.state.cs : false,
+        ds: obj.state ? obj.state.ds : false,
+        us: obj.state ? obj.state.us : false,
+        vm: obj.state ? obj.state.vm : false,
+        cm: obj.state ? obj.state.cm : false,
+        dm: obj.state ? obj.state.dm : false,
+        um: obj.state ? obj.state.um : false,
     })
 
     // Create verification token for new user
