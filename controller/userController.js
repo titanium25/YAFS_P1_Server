@@ -31,10 +31,11 @@ router.post("/signup", (req, res, next) => {
     } else {
         User.register(
             new User({ username: req.body.username }),
-            req.body.password,
+            req.body.password || ' ',
 
              (err, user) => {
                 if (err) {
+                    console.log(err)
                     res.statusCode = 500
                     res.send(err)
                 } else {
